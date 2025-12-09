@@ -1,5 +1,6 @@
 package rafael.literatura.principal;
 
+import rafael.literatura.model.Author;
 import rafael.literatura.model.Book;
 import rafael.literatura.model.DadosLivros;
 import rafael.literatura.repository.LivroRepository;
@@ -8,6 +9,7 @@ import rafael.literatura.service.ConverteDados;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
@@ -20,9 +22,12 @@ public class Principal {
     private List<DadosLivros> dadosLivros = new ArrayList<>();
 
     private List<Book> livros = new ArrayList<>();
+    private List<Book> autores = new ArrayList<Book>();
+    private Optional<Author> autorBusca;
 
     public Principal(LivroRepository repositorio) {
         this.repositorio = repositorio;
+        this.autorBusca = autorBusca;
     }
 
 
@@ -50,6 +55,18 @@ public class Principal {
                 case 1:
                     buscaLivro();
                     break;
+                case 2:
+                    listarLivros();
+                    break;
+                case 3:
+                    listarAutores();
+                    break;
+                case 4:
+                    autoresAno();
+                    break;
+                case 5:
+                    livrosIdioma();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -59,6 +76,23 @@ public class Principal {
         }
     }
 
+    private void livrosIdioma() {
+        System.out.print("Deseja buscar livro em qual idioma? ");
+        var idiomaLivro = leitura.nextLine().toUpperCase();
+        List<Book> livrosIdioma = repositorio.findByIdioma(idiomaLivro);
+        System.out.println("Livro por idioma: " + idiomaLivro);
+        livrosIdioma.forEach(System.out::println);
+
+    }
+
+
+    private void listarAutores() {
+        autores = repositorio.findAll();
+        autores.stream()
+                .forEach(System.out::println);
+    }
+
+
     private void buscaLivro() {
         DadosLivros dados = getDadosLivros();
         Book book = new Book(dados);
@@ -67,11 +101,32 @@ public class Principal {
 
     }
 
+    private void listarLivros() {
+        livros = repositorio.findAll();
+        livros.stream()
+                .forEach(System.out::println);
+    }
+
     private DadosLivros getDadosLivros(){
         System.out.println("Digite o nome do título para busca");
         var tituloLivro = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO +"search="+ tituloLivro);
         DadosLivros dados = conversor.obterDados(json, DadosLivros.class);
         return dados;
+    }
+
+    private void autoresAno() {
+        buscaLivro();
+        if(autorBusca.isPresent()){
+            Author author = autorBusca.get();
+            System.out.println("Digite o ano limite: ");
+            var anoLimite = leitura.nextInt();
+            leitura.nextLine();
+
+            Optional<Author> autorAno = repositorio.findAuthorByYear(author,anoLimite);
+            autorAno.stream()
+                    .forEach(System.out::println);
+        }
+
     }
 }
