@@ -6,10 +6,10 @@ O **APILiteratura** é uma API REST desenvolvida em Java, pensada para gerenciar
 O projeto foi criado com foco em simplicidade, organização e escalabilidade, permitindo fácil manutenção e extensão futura conforme suas necessidades.  
 
 ## 🧰 Tecnologias utilizadas  
-- Java (versão conforme seu `pom.xml`)  
-- Maven — para gerenciamento de dependências e build  
-- (Se aplicável: Spring Boot / JPA / Hibernate / banco de dados — adicione aqui os frameworks/bibliotecas que o projeto usa)  
-- (Outras dependências — por exemplo: validação, logging, testes — liste conforme necessário)  
+- Java 
+- Maven  
+- Spring Boot / JPA / Hibernate / PostgreSQL  
+
 
 ## 📦 Instalação  
 
